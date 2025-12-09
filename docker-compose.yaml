@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  # 1. Serviço PySpark/Jupyter Notebook
+  pyspark-notebook:
+    build: .
+    container_name: pyspark_dev
+    ports:
+      - "8888:8888" # Porta padrão do Jupyter Notebook
+      - "4040:4040" # Porta padrão do Spark UI
+    volumes:
+      - ./src:/home/jovyan/work
+    command: start-notebook.sh --NotebookApp.token='' --NotebookApp.password='' --no-browser --ip=0.0.0.0
+
+    # Variáveis de Ambiente (Configurações comuns do Jupyter, como token de acesso)
+    environment:
+      JUPYTER_ENABLE_LAB: "yes" # Opcional: para usar o JupyterLab
+    depends_on:
+      - mongodb
+    networks:
+      - spark_mongo_network
+
+  # 2. Serviço MongoDB
+  mongodb:
+    image: mongo:latest
+    container_name: mongo_db
+    restart: always # Tenta reiniciar o container se ele parar
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin123
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - spark_mongo_network
+
+networks:
+  spark_mongo_network:
+    driver: bridge
+
+volumes:
+  mongo_data:

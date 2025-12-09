@@ -1,0 +1,7 @@
+config.share
+.ipynb_checkpoints
+__pycache__/
+*.db
+.DS_Store
+.vscode/
+.env

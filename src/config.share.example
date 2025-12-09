@@ -1,0 +1,6 @@
+{
+    "shareCredentialsVersion":1,
+    "bearerToken":"SEU_TOKEN_AQUI",
+    "endpoint":"URL_SERVIDOR",
+    "expirationTime":"2026-12-01T19:02:37.420Z"
+}
