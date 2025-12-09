@@ -37,6 +37,50 @@ Este projeto utiliza **dados simulados da plataforma Blip**, obtidos através de
 - **Jupyter Notebook**: Interface interativa para desenvolvimento
 - **Docker & Docker Compose**: Orquestração de containers
 
+## 📚 Dependências JAR
+
+Este projeto utiliza JARs externos para integração com Delta Sharing e MongoDB. Eles são carregados automaticamente durante a inicialização da SparkSession através da configuração `spark.jars.packages`.
+
+### JARs Utilizados
+
+#### 1. **MongoDB Spark Connector** (`org.mongodb.spark:mongo-spark-connector_2.12:3.0.1`)
+
+- **Propósito**: Permite a leitura e escrita de dados entre Spark DataFrames e MongoDB
+- **Funcionalidades**:
+  - Escrita de dados processados no MongoDB com suporte a diferentes modos (append, overwrite)
+  - Leitura de coleções MongoDB como DataFrames
+  - Suporte a agregações e filtros do lado do MongoDB
+  - Inferência automática de schema
+- **Documentação**: [MongoDB Spark Connector](https://docs.mongodb.com/spark-connector/current/)
+
+#### 2. **Delta Sharing Spark** (`io.delta:delta-sharing-spark_2.12:0.7.0`)
+
+- **Propósito**: Implementa o protocolo Delta Sharing para consumo de dados compartilhados
+- **Funcionalidades**:
+  - Leitura de tabelas Delta compartilhadas via protocolo REST
+  - Autenticação via Bearer Token
+  - Suporte a versionamento e time travel de dados
+  - Integração nativa com Spark DataFrames
+- **Documentação**: [Delta Sharing Protocol](https://github.com/delta-io/delta-sharing)
+
+### Configuração no Código
+
+```python
+spark = (
+    SparkSession
+    .builder.appName("DeltaSharingApp")
+    .config("spark.jars.packages",
+            "org.mongodb.spark:mongo-spark-connector_2.12:3.0.1,"
+            "io.delta:delta-sharing-spark_2.12:0.7.0")
+    .getOrCreate()
+)
+```
+
+### Observações
+- **Download Automático**: Os JARs são baixados automaticamente do Maven Central na primeira execução
+- **Cache Local**: Após o primeiro download, os JARs são armazenados em cache no container
+- **Versões Alternativas**: Para usar versões diferentes, ajuste os números de versão na configuração `spark.jars.packages`
+
 ## 📦 Pré-requisitos
 
 - Docker
