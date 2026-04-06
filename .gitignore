@@ -5,3 +5,10 @@ __pycache__/
 .DS_Store
 .vscode/
 .env
+/arquivos_clientes
+checkpoint/
+data/
+checkpoint_2_dropDuplicate/
+data_2_dropDuplicate/
+checkpoint_contacts/
+data_contacts/
